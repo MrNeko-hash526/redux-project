@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addItemToCart } from '../features/shopCart/cartSlice'
 
 function NavBar() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState([])
+  const [loading, setLoading] = useState(false) // State to track loading status
   const dispatch = useDispatch()
+  const location = useLocation() // Hook to detect route changes
 
   const handleSearch = async (e) => {
-    e.preventDefault()
+    e.preventDefault() // Prevent default form submission behavior
+    if (searchQuery.trim() === '') {
+      setSearchResults([]) // Clear results if the search query is empty
+      return
+    }
+    setLoading(true) // Set loading to true before starting the API call
     try {
       const response = await fetch(`https://fakestoreapi.com/products`)
       const products = await response.json()
@@ -19,6 +26,8 @@ function NavBar() {
       setSearchResults(filteredProducts)
     } catch (error) {
       console.error('Error fetching products:', error)
+    } finally {
+      setLoading(false) // Set loading to false after the API call is complete
     }
   }
 
@@ -27,10 +36,11 @@ function NavBar() {
     alert(`${product.title} has been added to your cart!`)
   }
 
+  // Clear search results when navigating to a different page
   useEffect(() => {
     setSearchResults([])
-    setSearchQuery('')
-  }, [])
+    setSearchQuery('') // Optionally clear the search query as well
+  }, [location])
 
   return (
     <div>
@@ -61,7 +71,9 @@ function NavBar() {
       </nav>
 
       <div className="p-4">
-        {searchResults.length > 0 ? (
+        {loading ? (
+          <p className="text-gray-500">Loading...</p> // Show loading message while fetching
+        ) : searchResults.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {searchResults.map(product => (
               <div key={product.id} className="border p-4 rounded-lg shadow-md">
@@ -82,8 +94,8 @@ function NavBar() {
             ))}
           </div>
         ) : (
-          searchQuery.trim() && searchResults.length === 0 && (
-            <p className="text-gray-500">No results found.</p>
+          searchQuery.trim() && (
+            <p className="text-gray-500">No results found.</p> // Show only if search is complete
           )
         )}
       </div>
