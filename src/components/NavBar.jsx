@@ -59,7 +59,7 @@ function NavBar() {
             placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="p-2 rounded-lg text-black"
+            className="p-2 rounded-lg text-white"
           />
           <button
             type="submit"
