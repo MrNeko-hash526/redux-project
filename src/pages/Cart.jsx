@@ -31,35 +31,42 @@ function Cart() {
   }
 
   if (cartItems.length === 0) {
-    return <p className="text-center text-lg mt-10">Your cart is empty.</p>
+    return (
+      <div className="text-center text-lg mt-10 text-gray-500">
+        <p>Your cart is empty.</p>
+      </div>
+    )
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
-      <div className="grid grid-cols-1 gap-4">
+    <div className="p-6 bg-gray-900 text-gray-100 min-h-screen">
+      <h1 className="text-4xl font-bold mb-6 text-center">Your Cart</h1>
+      <div className="grid grid-cols-1 gap-6">
         {cartItems.map((item) => (
-          <div key={item.id} className="border p-4 rounded-lg shadow-md flex items-center justify-between">
+          <div
+            key={item.id}
+            className="border border-gray-700 p-4 rounded-lg shadow-lg bg-gray-800 flex items-center justify-between"
+          >
             <img
               src={item.image}
               alt={item.title}
-              className="w-20 h-20 object-contain"
+              className="w-24 h-24 object-contain rounded-lg"
             />
-            <div className="flex-1 ml-4">
-              <h3 className="text-lg font-semibold">{item.title}</h3>
-              <p className="text-gray-600">${item.price}</p>
-              <p className="text-gray-600">Total: ${item.totalPrice.toFixed(2)}</p>
-              <div className="flex items-center mt-2">
+            <div className="flex-1 ml-6">
+              <h3 className="text-xl font-semibold">{item.title}</h3>
+              <p className="text-gray-400">Price: ${item.price}</p>
+              <p className="text-gray-400">Total: ${item.totalPrice.toFixed(2)}</p>
+              <div className="flex items-center mt-4">
                 <button
                   onClick={() => handleDecreaseQuantity(item)}
-                  className="bg-gray-300 px-2 py-1 rounded-lg hover:bg-gray-400"
+                  className="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-600"
                 >
                   -
                 </button>
-                <span className="mx-2">{item.quantity}</span>
+                <span className="mx-4 text-lg">{item.quantity}</span>
                 <button
                   onClick={() => handleIncreaseQuantity(item)}
-                  className="bg-gray-300 px-2 py-1 rounded-lg hover:bg-gray-400"
+                  className="bg-gray-700 text-white px-3 py-1 rounded-lg hover:bg-gray-600"
                 >
                   +
                 </button>
@@ -74,13 +81,13 @@ function Cart() {
           </div>
         ))}
       </div>
-      <div className="mt-6">
-        <h2 className="text-2xl font-bold">Cart Summary</h2>
-        <p className="text-lg">Total Items: {totalQuantity}</p>
-        <p className="text-lg">Total Price: ${totalPrice.toFixed(2)}</p>
+      <div className="mt-8 p-6 bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-4">Cart Summary</h2>
+        <p className="text-lg mb-2">Total Items: <span className="font-semibold">{totalQuantity}</span></p>
+        <p className="text-lg mb-4">Total Price: <span className="font-semibold">${totalPrice.toFixed(2)}</span></p>
         <button
           onClick={handleClearCart}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 mt-4"
+          className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 w-full"
         >
           Clear Cart
         </button>
